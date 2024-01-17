@@ -25,7 +25,7 @@ class Game
     switch_player unless game_over?
   end
 
-  # Checks if a move is valid (i.e., within the board and not already occupied)
+  # Checks if a move is valid
   def valid_move?(position)
     return false if position < 0 || position >= BOARD_SIZE
     return false if @board[position] != EMPTY_CELL
@@ -37,7 +37,7 @@ class Game
     @current_player = @current_player == PLAYER_X ? PLAYER_O : PLAYER_X
   end
 
-  # Checks if the game is over (i.e., a player has won or the board is full)
+  # Checks if the game is over (
   def game_over?
     return switch_player if win?
     return 'Draw' if board_full?
@@ -49,7 +49,7 @@ def play
   result = nil
   until result
     begin
-      puts "\n\n"  # Add extra spacing
+      puts "\n\n"
       print_board
       puts "\nCurrent player: #{@current_player}"
       print "Enter a position: "
