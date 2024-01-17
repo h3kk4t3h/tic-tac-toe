@@ -20,12 +20,9 @@ class Game
 
   # Makes a move for the current player at the given position
   def make_move(position)
-    if valid_move?(position)
-      @board[position] = @current_player
-      switch_player
-    else
-      raise "Invalid move: position #{position} is either out of bounds or already occupied"
-    end
+    raise "Invalid move: position #{position} is either out of bounds or already occupied" unless valid_move?(position)
+    @board[position] = @current_player
+    switch_player unless game_over?
   end
 
   # Checks if a move is valid (i.e., within the board and not already occupied)
@@ -42,8 +39,35 @@ class Game
 
   # Checks if the game is over (i.e., a player has won or the board is full)
   def game_over?
-    win? || board_full?
+    return switch_player if win?
+    return 'Draw' if board_full?
+    nil
   end
+
+ # Controls the flow of the game
+def play
+  result = nil
+  until result
+    begin
+      puts "\n\n"  # Add extra spacing
+      print_board
+      puts "\nCurrent player: #{@current_player}"
+      print "Enter a position: "
+      position = gets.chomp.to_i
+      make_move(position)
+      result = game_over?
+    rescue RuntimeError => e
+      puts e.message
+      retry
+    end
+  end
+  switch_player if result != 'Draw'  # Switch back to the winner
+  print_board
+  puts "\nGame Over!"
+  puts "\n"
+  puts "Winner: Player #{result}" unless result == 'Draw'
+  puts "It's a draw!" if result == 'Draw'
+end
 
   private
 
@@ -59,3 +83,7 @@ class Game
     @board.none?(EMPTY_CELL)
   end
 end
+
+system "clear" or system "cls"  # Clear the terminal
+puts "Welcome player!"
+Game.new.play
