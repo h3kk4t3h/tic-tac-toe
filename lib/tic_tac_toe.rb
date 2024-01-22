@@ -38,8 +38,8 @@ class Game
   end
 
   def game_over?
-    return @current_player == PLAYER_X ? PLAYER_O : PLAYER_X if win?
     return 'Draw' if board_full?
+    return @current_player if win?
 
     nil
   end
@@ -50,16 +50,18 @@ class Game
   end
 
   def play_turn
-    begin
-      display_turn_info
-      position = get_position
-      make_move(position)
-      result = game_over?
-      switch_player unless result
-    rescue RuntimeError => e
-      puts e.message
-      retry
-    end
+    display_turn_info
+    position = position()
+    make_move_and_check_result(position)
+  rescue RuntimeError => e
+    puts e.message
+    retry
+  end
+
+  def make_move_and_check_result(position)
+    make_move(position)
+    result = game_over?
+    switch_player unless result
     result
   end
 
@@ -69,7 +71,7 @@ class Game
     puts "\nCurrent player: #{@current_player}"
   end
 
-  def get_position
+  def position
     print 'Enter a position: '
     gets.chomp.to_i
   end

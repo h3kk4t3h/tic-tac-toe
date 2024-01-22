@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'spec_helper'
-require_relative '../lib/tic-tac-toe'
+require_relative '../lib/tic_tac_toe'
 
 describe Game do
   let(:game) { described_class.new }
@@ -52,7 +52,7 @@ describe Game do
 
   describe '#play' do
     it 'plays a game' do
-      allow_any_instance_of(described_class).to receive(:gets).and_return('0', '1', '2', '3', '4', '5', '6', '7', '8')
+      allow_any_instance_of(described_class).to receive(:gets).and_return('0', '1', '2', '3', '4', '5', '7', '6', '8')
       game.play
       expect(game.game_over?).to eq('Draw')
     end
